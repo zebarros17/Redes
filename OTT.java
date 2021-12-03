@@ -21,10 +21,11 @@ public class OTT {
             InetAddress inetAddress = InetAddress.getByName("localhost");
             UDPClient client = new UDPClient(datagramSocket, inetAddress);
             client.sendThenReceive();
-        }
+        }    
         else {
             System.out.println("INVALID. TERMINATING");
         }
         scanner.close();
     }
 }
+
