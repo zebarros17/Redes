@@ -1,44 +1,51 @@
-import java.io.*;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+
 
 public class UDPServer {
-
     private DatagramSocket datagramSocket;
-    private byte[] buffer = new byte[256];  
+    private byte[] buffer; 
 
-    public UDPServer(DatagramSocket datagramSocket) {
-        this.datagramSocket = datagramSocket;
+    // Contructor
+    public UDPServer(int port) throws Exception{
+        this.datagramSocket = new DatagramSocket(port);
+        this.buffer = new byte[256];  
     }
 
-    public void receiveThenSend() {
+
+    // Treats message received
+    private void treatMessage(DatagramPacket datagramPacket) {
+        String message = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
+        System.out.println("Message from Client: " + message);
+    }
+
+    // Receives Message
+    private DatagramPacket receive() {
+        DatagramPacket datagramPacket = null;
+        try {
+            datagramPacket = new DatagramPacket(this.buffer, this.buffer.length);   
+            this.datagramSocket.receive(datagramPacket);
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("UDPServer receive() NOT YO");
+        }
+        return datagramPacket;
+    }
+
+    
+    public void run(){
         while(true) {
-            try {
-                // Receives Message
-                DatagramPacket datagramPacket = new DatagramPacket(this.buffer, this.buffer.length);   
-                this.datagramSocket.receive(datagramPacket);
-                InetAddress inetAddress =  datagramPacket.getAddress();
-                int port = datagramPacket.getPort();
-
-                // Treat de data Received
-                String message = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
-                System.out.println("Message from Client: " + message);
-
-                // Send Message
-                datagramPacket = new DatagramPacket(this.buffer, this.buffer.length, inetAddress, port);
-                this.datagramSocket.send(datagramPacket);
-            } 
-            catch (IOException e) {
-                e.printStackTrace();
-                break;
-            }
+            DatagramPacket datagramPacket = receive();
+            treatMessage(datagramPacket);
+            new Thread( new UDPWorker(this.datagramSocket, datagramPacket, this.buffer) ).start();
         }
     }
 
-    public static void main(String[] args) throws SocketException {
-        DatagramSocket datagramSocket = new DatagramSocket(1234);
-        UDPServer server = new UDPServer(datagramSocket);
-        server.receiveThenSend();
+
+    public static void main(String[] args) throws Exception {
+        System.out.println("SERVER RUNNING");
+        UDPServer server = new UDPServer(5000);
+        server.run();
     }
 }
-
-   
