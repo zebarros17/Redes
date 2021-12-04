@@ -1,4 +1,3 @@
-/*
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -9,12 +8,21 @@ public class UDPClient {
     private DatagramSocket datagramSocket;
     private InetAddress inetAddress;
     private byte[] buffer; 
-    private int port = 5000;
+    private int port;
 
     // Constructor
-    public UDPClient(DatagramSocket datagramSocket, InetAddress inetAddress) {
-        this.datagramSocket = datagramSocket;
-        this.inetAddress = inetAddress;
+    public UDPClient() {
+        try {
+            this.datagramSocket = new DatagramSocket();
+            this.inetAddress = InetAddress.getByName("localhost");
+            this.buffer = new byte[256];
+            this.port = 5000;
+
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("UDPClient constructor NOT YO");
+        }
     }
     
     
@@ -27,7 +35,7 @@ public class UDPClient {
     private DatagramPacket receiveNsend(){
         DatagramPacket datagramPacket = null;
         try {
-            datagramPacket = new DatagramPacket(this.buffer, this.buffer.length, inetAddress, port);
+            datagramPacket = new DatagramPacket(this.buffer, this.buffer.length, this.inetAddress, this.port);
             this.datagramSocket.send(datagramPacket);
             this.datagramSocket.receive(datagramPacket); 
         } 
@@ -53,13 +61,4 @@ public class UDPClient {
             getOutput(datagramPacket);
         }
     }
-
-    public static void main(String[] args) throws Exception {
-        DatagramSocket datagramSocket = new DatagramSocket();
-        InetAddress inetAddress = InetAddress.getByName("localhost");
-        UDPClient client = new UDPClient(datagramSocket, inetAddress);
-        System.out.println("Send Packets to a Server");
-        client.run();
-    }
 }
-*/
