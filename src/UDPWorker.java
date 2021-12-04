@@ -1,3 +1,4 @@
+/*
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
@@ -30,7 +31,7 @@ public class UDPWorker implements Runnable{
     public void run(){ send(); }
 
 }
-
+*/
 //Ganda cavalo que tens ai
 //Pequeno ponei que nao tens
 //Herois do mar nobre povo fdps

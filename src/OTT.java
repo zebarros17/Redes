@@ -1,3 +1,10 @@
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+  * Ott pode ser executado como cliente e como servidor.                            *
+  * Com a Flag -s dado como argumento Ott é executado como servidor na porta 5000   *
+  * Com a Flag -c dado como argumento Ott é executado como Cliente que contacta com *
+  * o servidor na porta 5000                                                        *
+  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
