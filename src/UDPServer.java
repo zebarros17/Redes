@@ -1,4 +1,3 @@
-/*
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
@@ -9,8 +8,7 @@ public class UDPServer {
 
     // Contructor
     public UDPServer(int port) throws Exception{
-        this.datagramSocket = new DatagramSocket(port);
-        this.buffer = new byte[256];  
+        this.datagramSocket = new DatagramSocket(port); 
     }
 
 
@@ -22,8 +20,10 @@ public class UDPServer {
 
     // Receives Message
     private DatagramPacket receive() {
+        // Inicializa o packet
         DatagramPacket datagramPacket = null;
         try {
+            // O packet é preenchido com informação
             datagramPacket = new DatagramPacket(this.buffer, this.buffer.length);   
             this.datagramSocket.receive(datagramPacket);
         } 
@@ -37,17 +37,10 @@ public class UDPServer {
     
     public void run(){
         while(true) {
+            this.buffer = new byte[256];
             DatagramPacket datagramPacket = receive();
             treatMessage(datagramPacket);
             new Thread( new UDPWorker(this.datagramSocket, datagramPacket, this.buffer) ).start();
         }
     }
-
-
-    public static void main(String[] args) throws Exception {
-        System.out.println("SERVER RUNNING");
-        UDPServer server = new UDPServer(5000);
-        server.run();
-    }
 }
-*/
