@@ -1,48 +1,43 @@
-package Parsing;
 public class Link {
-    private Integer node1;
-    private Integer node2;
-    private String ip;
+    private int deviceID;
+    private String ip4;
 
 
-    // Constructor
+    // Constructors
     public Link() {
-        this.node1 = 0;
-        this.node2 = 0;
-        this.ip = "";
+        this.deviceID = 0;
+        this.ip4 = null;
     }
 
-    public Link(int node1, int node2, String ip) {
-        this.node1 = node1;
-        this.node2 = node2;
-        this.ip = ip;
+    public Link(int deviceID, String ipv4) {
+        this.deviceID = deviceID;
+        this.ip4 = ipv4;
     }
 
 
     // GETTERS
-    public int getNode1() {
-        return node1;
+    public int getDeviceID() {
+        return this.deviceID;
     }
 
-    public int getNode2() {
-        return node2;
-    }
-
-    public String getIp() {
-        return ip;
+    public String getIP4() {
+        return this.ip4;
     }
 
 
     // SETTERS
-    public void setNode1(int node1) {
-        this.node1 = node1;
+    public void setDeviceID(int deviceID) {
+        this.deviceID = deviceID;
     }
 
-    public void setNode2(int node2) {
-        this.node2 = node2;
+    public void setIpv4(String ipv4) {
+        this.ip4 = ipv4;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+
+    // OTHER
+    public void print() {
+        System.out.println("deviceID: " + this.deviceID);
+        System.out.println("ip4: " + this.ip4);
     }
 }

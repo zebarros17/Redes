@@ -1,42 +1,56 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<scenario name="/home/core/Desktop/ESR/TP3/overlay1.xml">
+<scenario name="/home/core/Desktop/ESR/TP3/underlay1.xml">
   <networks>
-    <network id="2" name="switch" type="SWITCH">
-      <position x="530" y="265" lat="47.57675788479456" lon="-122.12518039349123" alt="2.0"/>
+    <network id="5" name="n5" type="SWITCH">
+      <position x="286" y="294" lat="47.57649427187494" lon="-122.12846822743111" alt="2.0"/>
     </network>
   </networks>
   <devices>
-    <device id="1" name="Server" type="host" class="" image="">
-      <position x="718" y="261" lat="47.576794245093126" lon="-122.12264714439003" alt="2.0"/>
+    <device id="1" name="n1" type="host" class="" image="">
+      <position x="773" y="295" lat="47.5764851817506" lon="-122.12190603428064" alt="2.0"/>
       <services>
         <service name="DefaultRoute"/>
         <service name="SSH"/>
       </services>
     </device>
-    <device id="3" name="pc1" type="PC" class="" image="">
-      <position x="346" y="181" lat="47.577521445761846" lon="-122.12765974367542" alt="2.0"/>
+    <device id="2" name="n2" type="router" class="" image="">
+      <position x="494" y="295" lat="47.5764851817506" lon="-122.12566548374468" alt="2.0"/>
+      <services>
+        <service name="zebra"/>
+        <service name="OSPFv2"/>
+        <service name="OSPFv3"/>
+        <service name="IPForward"/>
+      </services>
+    </device>
+    <device id="3" name="n3" type="PC" class="" image="">
+      <position x="141" y="139" lat="47.5779032220699" lon="-122.13042206317408" alt="2.0"/>
       <services>
         <service name="DefaultRoute"/>
       </services>
     </device>
-    <device id="4" name="pc2" type="PC" class="" image="">
-      <position x="348" y="334" lat="47.576130665670135" lon="-122.12763279421691" alt="2.0"/>
+    <device id="4" name="n4" type="PC" class="" image="">
+      <position x="143" y="387" lat="47.57564888355958" lon="-122.13039511371557" alt="2.0"/>
       <services>
         <service name="DefaultRoute"/>
       </services>
     </device>
   </devices>
   <links>
-    <link node1="2" node2="3">
-      <iface2 id="0" name="eth0" mac="00:00:00:aa:00:00" ip4="10.0.0.20" ip4_mask="24" ip6="2001::20" ip6_mask="64"/>
+    <link node1="5" node2="3">
+      <iface2 id="0" name="eth0" mac="00:00:00:aa:00:0a" ip4="10.0.0.20" ip4_mask="24" ip6="2001::20" ip6_mask="64"/>
       <options delay="0" bandwidth="0" loss="0.0" dup="0" jitter="0" unidirectional="0"/>
     </link>
-    <link node1="2" node2="4">
-      <iface2 id="0" name="eth0" mac="00:00:00:aa:00:01" ip4="10.0.0.21" ip4_mask="24" ip6="2001::21" ip6_mask="64"/>
+    <link node1="5" node2="4">
+      <iface2 id="0" name="eth0" mac="00:00:00:aa:00:0b" ip4="10.0.0.21" ip4_mask="24" ip6="2001::21" ip6_mask="64"/>
+      <options delay="0" bandwidth="0" loss="0.0" dup="0" jitter="0" unidirectional="0"/>
+    </link>
+    <link node1="5" node2="2">
+      <iface2 id="0" name="eth0" mac="00:00:00:aa:00:0c" ip4="10.0.0.1" ip4_mask="24" ip6="2001::1" ip6_mask="64"/>
       <options delay="0" bandwidth="0" loss="0.0" dup="0" jitter="0" unidirectional="0"/>
     </link>
     <link node1="2" node2="1">
-      <iface2 id="0" name="eth0" mac="00:00:00:aa:00:02" ip4="10.0.0.10" ip4_mask="24" ip6="2001::10" ip6_mask="64"/>
+      <iface1 id="1" name="eth1" mac="00:00:00:aa:00:0d" ip4="10.0.1.1" ip4_mask="24" ip6="2001:1::1" ip6_mask="64"/>
+      <iface2 id="0" name="eth0" mac="00:00:00:aa:00:0e" ip4="10.0.1.10" ip4_mask="24" ip6="2001:1::10" ip6_mask="64"/>
       <options delay="0" bandwidth="0" loss="0.0" dup="0" jitter="0" unidirectional="0"/>
     </link>
   </links>
