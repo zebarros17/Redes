@@ -1,24 +1,25 @@
 package Parsing;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.*;
+import java.util.Map;
 
 public class Underlay {
-    List<Entity> entities;
-    List<Link> links;
-
+    private Map<Integer, Device> entities;
+    private Map<Integer, List<Link>> links;
 
     // Constructors
-    public Underlay ( List<Entity> entities, List<Link> links) {
-        this.entities = new ArrayList<>(entities);
-        this.links = new ArrayList<>(links);
+    public Underlay ( Map<Integer, Device> entities, Map<Integer, List<Link>> links) {
+        this.entities = new HashMap<>(entities);
+        this.links = new HashMap<>(links);
     }
 
     public Underlay ( String file ) throws Exception {
-        this.entities = new ArrayList<>();
-        this.links = new ArrayList<>();
+        this.entities = new HashMap<>();
+        this.links = new HashMap<>();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -29,24 +30,15 @@ public class Underlay {
         parseNetworks(document);
         parseDevices(document);
         parseLinks(document);
-            
-        // Print de teste podem tirar se quiserem
-        for (int i = 0; i < entities.size(); i++) {
-            System.out.println("ENTITY");
-            System.out.println(this.entities.get(i).getId());
-            System.out.println(this.entities.get(i).getName());
-            System.out.println(this.entities.get(i).getPositionX());
-            System.out.println(this.entities.get(i).getPositionY());
-            System.out.println();
-        }
 
-        for (int i = 0; i < links.size(); i++) {
-            System.out.println("LINK");
-            System.out.println(this.links.get(i).getNode1());
-            System.out.println(this.links.get(i).getNode2());
-            System.out.println(this.links.get(i).getIp());
-            System.out.println();
-        }
+    }
+
+    public Map<Integer, List<Link>> getLinks() {
+        return links;
+    }
+
+    public Map<Integer, Device> getEntities() {
+        return entities;
     }
 
 
@@ -66,7 +58,6 @@ public class Underlay {
             network.setPositionX(Integer.parseInt( postionElement.getAttribute("x") ));
             network.setPositionY(Integer.parseInt( postionElement.getAttribute("y") ));
 
-            this.entities.add(network);                
         }
     }
 
@@ -85,7 +76,7 @@ public class Underlay {
             device.setPositionX(Integer.parseInt( postionElement.getAttribute("x") ));
             device.setPositionY(Integer.parseInt( postionElement.getAttribute("y") ));
 
-            this.entities.add(device);                
+            this.entities.put(device.getId(), device);
         }
     }
 
@@ -103,11 +94,42 @@ public class Underlay {
             Element iface2Element = (Element) iface2;
             link.setIp(iface2Element.getAttribute("ip4"));
 
-            this.links.add(link);                
+            // Node 1
+            if(!this.links.containsKey(link.getNode1())){
+                List<Link> auxLink = new ArrayList<>();
+                auxLink.add(link);
+                this.links.put(link.getNode1(), auxLink);
+            }
+            else{
+                List<Link> auxLink = new ArrayList<>(this.links.get(link.getNode1()));
+                auxLink.add(link);
+                this.links.put(link.getNode1(), auxLink);
+            }
+            // Node 2
+            if(!this.links.containsKey(link.getNode2())){
+                List<Link> auxLink = new ArrayList<>();
+                auxLink.add(link);
+                this.links.put(link.getNode2(), auxLink);
+            }
+            else{
+                List<Link> auxLink = new ArrayList<>(this.links.get(link.getNode2()));
+                auxLink.add(link);
+                this.links.put(link.getNode2(), auxLink);
+            }
+
         }
     }
 
+    @Override
+    public String toString() {
+        return "Underlay{" +
+                "entities=" + entities + "\n" +
+                ", links=" + links +
+                '}';
+    }
+
     public static void main(String[] args) throws Exception{
-        Underlay underlay = new Underlay("Parsing/overlay1.xml");
+        Underlay underlay = new Underlay("src/Parsing/underlay1.xml");
+        System.out.println(underlay);
     }
 }
