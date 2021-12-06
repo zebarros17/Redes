@@ -1,4 +1,8 @@
-public class Link {
+package Parsing;
+
+import java.io.Serializable;
+
+public class Link implements Serializable {
     private int id;
     private String ip4;
 

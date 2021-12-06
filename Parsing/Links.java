@@ -1,7 +1,10 @@
+package Parsing;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Links {
+public class Links implements Serializable {
     private int id;
     private ArrayList<Link> links;
 

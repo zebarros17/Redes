@@ -1,3 +1,5 @@
+package Parsing;
+
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.File;
@@ -51,6 +53,9 @@ public class Topology {
         return this.underlay;
     }
 
+    public Links getLinks(int id){
+        return this.underlay.getLinks(id);
+    }
 
     // --- SETTERS ---
     public void setDevices(Devices devices) {
