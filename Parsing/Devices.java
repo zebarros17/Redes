@@ -1,7 +1,7 @@
 package Parsing;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Devices {
     private HashMap<Integer, Device> devices;

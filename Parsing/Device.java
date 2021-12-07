@@ -1,5 +1,6 @@
 package Parsing;
 
+
 public class Device {
     private Integer id;
     private String name; 

@@ -1,8 +1,5 @@
-import java.util.Scanner;
-
 public class OTT {
-
-    public static void main(String[] argvs) throws Exception{
+    public static void main(String argvs[]) throws Exception{
         if(argvs[0].equals("c")){
             System.out.println("CLIENT RUNNING");
             UDPClient client = new UDPClient(Integer.parseInt(argvs[1]));

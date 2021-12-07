@@ -1,51 +1,58 @@
-import Parsing.Links;
-import Parsing.Topology;
-
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.nio.ByteBuffer;
+
+import Parsing.AddressTable;
+import Parsing.Links;
 
 
 public class UDPWorker implements Runnable{
     private DatagramSocket datagramSocket;
     private DatagramPacket datagramPacket;
-    private Topology underlay;
-    private byte[] buffer;
+    private AddressTable underlay;
+    private InetAddress inetAddress;
+    private int port;
     
-
-    public UDPWorker(DatagramSocket datagramSocket, DatagramPacket datagramPacket, Topology underlay, byte[] buffer) {
+    // --- CONSTRUCTOR ---
+    public UDPWorker(DatagramSocket datagramSocket, DatagramPacket datagramPacket, AddressTable underlay) {
         this.datagramSocket = datagramSocket;
         this.datagramPacket = datagramPacket;
-        this.underlay = underlay;
-        this.buffer = buffer;
+        this.underlay       = underlay;
+        this.inetAddress    = this.datagramPacket.getAddress();
+        this.port           = this.datagramPacket.getPort();  
     }
+    
 
-    public void send() {
+    // CONNECTIONS
+    private void connect() {
         try {
-            //this.datagramPacket = new DatagramPacket(this.buffer, this.buffer.length, this.datagramPacket.getAddress(), this.datagramPacket.getPort());
-            this.datagramSocket.send(datagramPacket);
-        } 
+            byte[] buffer = this.datagramPacket.getData();
+            int clientID  = ByteBuffer.wrap(buffer).getInt();
+
+            Links clientLinks = this.underlay.getLinks(clientID);
+            clientLinks.print();
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(6400);
+            ObjectOutputStream oos     = new ObjectOutputStream(baos);
+            oos.writeObject(clientLinks);
+            oos.flush();
+            oos.close();
+            buffer = baos.toByteArray();
+
+            DatagramPacket linksPacket = new DatagramPacket(buffer, buffer.length, this.inetAddress, this.port);
+            this.datagramSocket.send(linksPacket);
+        }
         catch (Exception e) {
             e.printStackTrace();
-            System.out.println("UDPServer send() NOT YO");
+            System.out.println("UDPWorker NOT YO");
         }
     }
-
-    public void sendLinks() throws IOException {
-        int clientID = Integer.parseInt(this.datagramPacket.getData().toString());
-        Links links = this.underlay.getLinks(clientID);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream (baos);
-        oos.writeObject(links);
-        oos.close();
-}
-    
     
     @Override
     public void run() {   
-        send(); 
+        connect();
     }
 }

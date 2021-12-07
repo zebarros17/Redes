@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Links implements Serializable {
+public class Links implements Serializable{
     private int id;
     private ArrayList<Link> links;
 

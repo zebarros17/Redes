@@ -1,55 +1,40 @@
-import Parsing.Topology;
-
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import Parsing.AddressTable;
+
+
 public class UDPServer {
     private DatagramSocket datagramSocket;
-    private byte[] buffer;
-    private Topology underlay;
-
-    private int port;
-    private InetAddress inetAddress;
-
-    // Contructor
-    public UDPServer() throws Exception{
-        port = 5000;
-        inetAddress = InetAddress.getByName("localhost"); // CHANGE
-        this.datagramSocket = new DatagramSocket(this.port, this.inetAddress);
-        this.underlay = new Topology("src/Parsing/underlay1.xml");
-    }
+    private AddressTable underlay;
 
 
-    // Treats message received
-    private void treatMessage(DatagramPacket datagramPacket) {
-        String message = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
-        System.out.println("Message from Client: " + message);
-    }
-
-    // Receives Message
-    private DatagramPacket receive() {
-        // Inicializa o packet
-        DatagramPacket datagramPacket = null;
-        try {
-            // O packet é preenchido com informação
-            datagramPacket = new DatagramPacket(this.buffer, this.buffer.length);   
-            this.datagramSocket.receive(datagramPacket);
+    // --- CONSTRUCTOR ---
+    public UDPServer() {
+        try { 
+            this.datagramSocket = new DatagramSocket(5000, InetAddress.getByName("localhost")); // CHANGE 
+            this.underlay       = new AddressTable("underlay1.xml"); // CHANGE
         } 
         catch (Exception e) {
             e.printStackTrace();
-            System.out.println("UDPServer receive() NOT YO");
+            System.out.println("UDPServer NOT OK");
         }
-        return datagramPacket;
+       
     }
 
-
     public void run(){
-        while(true) {
-            this.buffer = new byte[256];
-            DatagramPacket datagramPacket = receive();
-            treatMessage(datagramPacket);
-            new Thread( new UDPWorker(this.datagramSocket, datagramPacket, this.underlay, this.buffer) ).start();
+        while (true) {
+            byte[] buffer = new byte[256];
+            DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
+            try {
+                this.datagramSocket.receive(datagramPacket);
+                new Thread( new UDPWorker(this.datagramSocket, datagramPacket, this.underlay) ).start();
+            } 
+            catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("UDPServer run() NOT YO");
+            }
         }
     }
 }
