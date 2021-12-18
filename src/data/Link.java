@@ -1,21 +1,25 @@
-package Parsing;
+package data;
 
 import java.io.Serializable;
 
+
 public class Link implements Serializable{
-    private int id;
+    private int    id;
     private String ip4;
+    private int    on;
 
 
     // --- CONSTRUCTORS ---
     public Link() {
-        this.id = 0;
+        this.id  = 0;
         this.ip4 = null;
+        this.on  = 0;
     }
 
     public Link(int id, String ip4) {
-        this.id = id;
+        this.id  = id;
         this.ip4 = ip4;
+        this.on  = 0;
     }
 
 
@@ -28,6 +32,10 @@ public class Link implements Serializable{
         return this.ip4;
     }
 
+    public Boolean isOn() {
+        return this.on == 1;
+    }
+
 
     // --- SETTERS ---
     public void setID(int id) {
@@ -38,10 +46,19 @@ public class Link implements Serializable{
         this.ip4 = ipv4;
     }
 
+    public void turnON() {
+        this.on = 1;
+    }
+
+    public void turnOFF() {
+        this.on = 0;
+    }
+
 
     // --- OTHER ---
     public void print() {
         System.out.println("deviceID: " + this.id);
         System.out.println("ip4: " + this.ip4);
+        System.out.println("on: " + this.on);
     }
 }

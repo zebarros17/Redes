@@ -1,4 +1,4 @@
-package Parsing;
+package data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,9 +8,15 @@ public class Links implements Serializable{
     private int id;
     private ArrayList<Link> links;
 
+    
     // --- CONSTRUCTORS ---
     public Links() {
         this.id = 0;
+        this.links = new ArrayList<Link>();
+    }
+
+    public Links(int id) {
+        this.id = id;
         this.links = new ArrayList<Link>();
     }
 
@@ -30,10 +36,14 @@ public class Links implements Serializable{
         return this.links;
     }
 
+    public ArrayList<Link> getLinksON() {
+        ArrayList<Link> linksON = new ArrayList<Link>();
+        for (Link link : this.links) if (link.isOn()) linksON.add(link);
+        return linksON;
+    }
+
     public Link getLink(int id) {
-        for (Link link : this.links) {
-            if (id == link.getID()) return link; 
-        }
+        for (Link link : this.links) if (id == link.getID()) return link; 
         return null;
     }
 
@@ -55,13 +65,21 @@ public class Links implements Serializable{
         this.links.add(link);
     }
 
+    public void turnON(int id) {
+        for (Link link : this.links) if (link.getID() == id) link.turnON();
+    }
+
+    public void turnOFF(int id) {
+        for (Link link : this.links) if (link.getID() == id) link.turnOFF();
+    }
+
 
     // --- OTHER ---
     public void print() {
         System.out.println("id: " + this.id);
-        for(Link link : this.links) {
-            link.print();
-        }
+        for (Link link : this.links) link.print();
+        System.out.println();
+        System.out.println("--------------------------");
         System.out.println();
     }
     
