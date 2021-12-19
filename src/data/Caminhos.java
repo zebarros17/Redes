@@ -23,6 +23,22 @@ public class Caminhos implements Serializable{
         return caminhos;
     }
 
+    public Caminho getCaminho(int idDestino){
+        for(Caminho c: this.caminhos)
+            if(c.getId() == idDestino)
+                return c;
+        return null;
+    }
+
+    public List<Link> getVizinhos(){
+        List<Link> res = new ArrayList<>();
+        for(Caminho c: caminhos)
+            if(c.isVizinho())
+                res.add(c.getNodoDestino());
+
+        return res;
+    }
+
 
     // --- SETTERS ---
     public void setCaminhos(ArrayList<Caminho> caminhos) {

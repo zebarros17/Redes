@@ -4,6 +4,7 @@ import data.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
 
 
 public class UDPServer {
@@ -23,8 +24,8 @@ public class UDPServer {
         this.underlay = new Underlay(file);
         this.caminhos = new Caminhos();
 
-        //this.iAddress = InetAddress.getByName("10.0.0.10"); 
-        this.iAddress    = InetAddress.getByName("localhost");
+        this.iAddress = InetAddress.getByName("10.0.0.10"); 
+        //this.iAddress    = InetAddress.getByName("localhost");
         this.port        = 4000 + this.id;
 
         this.dSocket = new DatagramSocket(this.port, this.iAddress);
@@ -44,7 +45,7 @@ public class UDPServer {
             this.dSocket.receive(dPacket);
             
             // We treat the flag
-            String receivedData = new String(buffer, "UTF-8");
+            String receivedData = new String(buffer, StandardCharsets.UTF_8);
             String[] arrOfStr   = receivedData.split(":", 2);
             String flag         = arrOfStr[0].trim();
 
@@ -55,8 +56,8 @@ public class UDPServer {
             }
             // Whatever we want muahahaha
             if(flag.equals("SON")) {
-                int clientID = Integer.parseInt(arrOfStr[1].trim());
-                
+                int destinoID = Integer.parseInt(arrOfStr[1].trim());
+                new Thread(new StreamSend(this.caminhos, destinoID)).start();
             }
         }
     }

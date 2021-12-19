@@ -52,6 +52,9 @@ public class Caminho implements Serializable {
         this.nodoDestino = nodoDestino;
     }
 
+    public boolean isVizinho(){
+        return this.proxSalto.equals(this.nodoDestino);
+    }
 
     // --- OTHER ---
     public void print() {

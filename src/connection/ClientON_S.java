@@ -26,8 +26,8 @@ public class ClientON_S implements Runnable {
         this.underlay = underlay;
         this.caminhos = caminhos;
 
-        //this.iAddress  = InetAddress.getByName("10.0.0.10");
-        this.iAddress   = InetAddress.getByName("localhost");
+        this.iAddress  = InetAddress.getByName("10.0.0.10");
+        //this.iAddress   = InetAddress.getByName("localhost");
         this.serverPort = 4100 + clientID;
 
         this.clientAddress = dPacket.getAddress();
@@ -63,7 +63,7 @@ public class ClientON_S implements Runnable {
         try {
             System.out.println("Client: " + this.clientID + " is YO");
             this.underlay.turnONDevices(this.clientID);
-            this.dSocket.setSoTimeout(10000);
+            this.dSocket.setSoTimeout(4000);
             while(true){
                 sendCaminhos();
                 byte[] buffer = new byte[512];
@@ -76,5 +76,6 @@ public class ClientON_S implements Runnable {
             this.dSocket.close();
             this.underlay.turnOFFDevices(this.clientID);
         }
-    }   
+    }
+
 }
