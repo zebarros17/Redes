@@ -23,7 +23,6 @@ public class ClientON_CR implements Runnable {
         this.caminhos = caminhos;
 
         this.serverAddress = InetAddress.getByName("10.0.0.10");
-        //this.serverAddress = InetAddress.getByName("localhost");
         this.serverPort = 4100 + this.id;
 
         this.dSocket = dSocket;
@@ -32,7 +31,7 @@ public class ClientON_CR implements Runnable {
 
     // Receives his links
     private void receiveCaminhos() throws Exception {
-        byte[] buffer          = new byte[512];
+        byte[] buffer          = new byte[15000];
         DatagramPacket dPacket = new DatagramPacket(buffer, buffer.length, this.serverAddress, this.serverPort);
         this.dSocket.receive(dPacket);
 
@@ -58,7 +57,8 @@ public class ClientON_CR implements Runnable {
             }     
         } 
         catch (Exception e) {
-            System.out.println("ClientON_C NOT YO");
+            e.printStackTrace();
+            System.out.println("ClientON_CR NOT YO");
             this.dSocket.close();
         }
     }

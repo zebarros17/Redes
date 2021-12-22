@@ -27,7 +27,6 @@ public class ClientON_S implements Runnable {
         this.caminhos = caminhos;
 
         this.iAddress  = InetAddress.getByName("10.0.0.10");
-        //this.iAddress   = InetAddress.getByName("localhost");
         this.serverPort = 4100 + clientID;
 
         this.clientAddress = dPacket.getAddress();
@@ -66,7 +65,7 @@ public class ClientON_S implements Runnable {
             this.dSocket.setSoTimeout(4000);
             while(true){
                 sendCaminhos();
-                byte[] buffer = new byte[512];
+                byte[] buffer = new byte[15000];
                 DatagramPacket dPacket = new DatagramPacket(buffer, buffer.length, this.clientAddress, this.clientPort);
                 this.dSocket.receive(dPacket);
             }

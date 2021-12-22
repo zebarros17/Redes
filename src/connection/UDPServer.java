@@ -7,14 +7,15 @@ import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 
 
-public class UDPServer {
+public class UDPServer  {
+    // Variáveis unicas
     private int          id;        
     private Underlay     underlay;  
     private Caminhos     caminhos;
 
-    private InetAddress iAddress;   
-    private int         port;   
-
+    // RTP variables
+    private InetAddress    iAddress;   
+    private int            port;   
     private DatagramSocket dSocket;
 
 
@@ -25,12 +26,11 @@ public class UDPServer {
         this.caminhos = new Caminhos();
 
         this.iAddress = InetAddress.getByName("10.0.0.10"); 
-        //this.iAddress    = InetAddress.getByName("localhost");
-        this.port        = 4000 + this.id;
+        this.port     = 4000 + this.id;
 
         this.dSocket = new DatagramSocket(this.port, this.iAddress);
     }
-
+    
 
     // Run the Server
     public void run() throws Exception {
@@ -57,7 +57,7 @@ public class UDPServer {
             // Whatever we want muahahaha
             if(flag.equals("SON")) {
                 int destinoID = Integer.parseInt(arrOfStr[1].trim());
-                new Thread(new StreamSend(this.caminhos, destinoID)).start();
+                new Thread(new StreamSend_S(this.caminhos, destinoID)).start();
             }
         }
     }

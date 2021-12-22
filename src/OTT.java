@@ -16,7 +16,7 @@ public class OTT {
         }
         else if(argvs[0].equals("s")) {
             System.out.println("SERVER RUNNING");
-            UDPServer server = new UDPServer("underlay2.xml", Integer.parseInt(argvs[1]));
+            UDPServer server = new UDPServer("underlay3.xml", Integer.parseInt(argvs[1]));
             server.run();
         }
         else System.out.println("INVALID. TERMINATING");
